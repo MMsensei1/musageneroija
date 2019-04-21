@@ -1,10 +1,11 @@
+import java.util.ArrayList;
 
 public class Motiivi {
 	private String nimi;
 	private boolean onkoAluke = false;
 	private boolean onkoViive = false;
 	private boolean onkoSeuraavallaAluke = false;
-	private int[] rytmi;
+	private ArrayList<Integer> rytmi;
 	private int pituus;
 	
 	public Motiivi(String nimi, int pituus) {
@@ -62,5 +63,13 @@ public class Motiivi {
 	
 	public int annaPituus() {
 		return this.pituus;
+	}
+	
+	public ArrayList<Integer> annaRytmi(){
+		return this.rytmi;
+	}
+	
+	public void asetaRytmi(ArrayList<Integer> rytmi) {
+		this.rytmi = rytmi;
 	}
 }

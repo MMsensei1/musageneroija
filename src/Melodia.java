@@ -155,5 +155,198 @@ public class Melodia {
 	
 	public void arvoRytmit(ArrayList<Motiivi> a) {
 		boolean onkoSama = apuri.onkoSama(a);
+		boolean onkoLoppuAluke = false;
+		if (a.get(a.size()-1).annaSeuraavallaAluke()) onkoLoppuAluke = true;
+		
+		for (int i = 0; i<a.size(); i++) {
+			if (a.get(i).annaPituus() == 2) {
+				if (a.get(i).annaAluke()) {
+					//pieni aluke, pieni rytmi
+					a.get(i).asetaRytmi(rytmiLuojaPieni());
+				}
+				
+				else {
+					//Asetetaan rytmi
+					a.get(i).asetaRytmi(rytmiLuoja(2));
+				}
+				
+				if (a.get(i).annaViive()) {
+					//lisataan viive
+					lisaaViive(a.get(i));
+				}
+				
+				if (a.get(i).annaSeuraavallaAluke()) {
+					//Poistetaan loppu antaen tilaa seuraavalle alukkeelle
+					poistaLoppuPieni(a.get(i));
+				}
+			}
+			
+			else if (a.get(i).annaPituus() == 4 && !a.get(i).annaNimi().equals("pitka")) {
+				//Asetetaan rytmi
+				a.get(i).asetaRytmi(rytmiLuoja(4));
+				
+				if (a.get(i).annaAluke()) {
+					//Arvo aluke
+					//Jos edellinen oli 2, aluke on pieni
+				}
+				
+				if (a.get(i).annaViive()) {
+					//Arvo viive
+				}
+				
+				if (a.get(i).annaSeuraavallaAluke()) {
+					// stop kolmosella
+					//Arvo nuotin pituus
+				}
+			}
+			
+			else if (a.get(i).annaNimi().equals("pitka")) {
+				
+				if (a.get(i).annaSeuraavallaAluke()) {
+					//Perus pitka
+				}
+				
+				else //Arvo pitka
+				
+				if (a.get(i).annaAluke()) {
+					//Arvo aluke
+					//Jos edellinen oli 2, aluke on pieni
+				}
+			}
+			
+			else if (a.get(i).annaPituus() == 8) {
+				
+				if (a.get(i).annaSeuraavallaAluke()) {
+					//Perus superpitka
+				}
+				
+				else //Arvo superpitka
+				
+				if (a.get(i).annaAluke()) {
+					//Arvo aluke
+					//Jos edellinen oli 2, aluke on pieni
+				}
+			}
+		}
+	}
+	
+	public ArrayList<Integer> rytmiLuoja(int pituus) {
+		ArrayList<Integer> palautus = new ArrayList<Integer>();
+		
+		//Lisataan alkuun 2 iskua (4 kahdeksasosaa) taukoa 
+		palautus.add(40);
+		
+		for (int i = 0; i<pituus/2; i++) {
+			//Arvotaan rytmi: pitka(1), 1/4 * 2 (2), 1/8 * 4 (3), 1/4 + 1/8 * 2 (4), 1/8 * 2 + 1/4 (5), 1/8 + 1/4 + 1/8 (6)  
+			int[] a = new int[] {1, 1, 2, 1, 3, 1, 4, 1, 5, 1, 6, 1};
+			int b = apuri.arpoja(a);
+			
+			if (b == 1) {
+				palautus.add(4);
+			}
+			
+			else if (b == 2) {
+				palautus.add(2);
+				palautus.add(2);
+			}
+			
+			else if (b == 3) {
+				palautus.add(1);
+				palautus.add(1);
+				palautus.add(1);
+				palautus.add(1);
+			}
+			
+			else if (b == 4) {
+				palautus.add(2);
+				palautus.add(1);
+				palautus.add(1);
+			}
+			
+			else if (b == 5) {
+				palautus.add(1);
+				palautus.add(1);
+				palautus.add(2);
+			}
+			
+			else if (b == 6) {
+				palautus.add(1);
+				palautus.add(2);
+				palautus.add(1);
+			}
+		}
+		
+		return palautus;
+	}
+	
+	public ArrayList<Integer> rytmiLuojaPieni() {
+		ArrayList<Integer> palautus = new ArrayList<Integer>();
+		
+		//Lisataan alkuun 1 isku (2 kahdeksasosaa) taukoa 
+		palautus.add(20);
+		
+		//Arvotaan aluke: 1/8 * 2 (1), 1/4 (2), 1/8 (3)
+		int[] a = new int[] {1, 1, 2, 1};
+		int b = apuri.arpoja(a);
+		
+		if (b == 1) {
+			palautus.add(1);
+			palautus.add(1);
+		}
+		
+		else if (b == 2) {
+			palautus.add(2);
+		}
+		
+		else if (b == 3) {
+			palautus.add(10);
+			palautus.add(1);
+		}
+		
+		//Arvotaan rytmi: 1/8 * 2 (1), 1/4 (2)
+		a = new int[] {1, 1, 2, 1};
+		b = apuri.arpoja(a);
+		
+		if (b == 1) {
+			palautus.add(1);
+			palautus.add(1);
+		}
+		
+		else if (b == 2) {
+			palautus.add(2);
+		}	
+		
+		return palautus;
+	}
+	
+	public void lisaaViive(Motiivi m) {
+		if (m.annaRytmi().get(1) == 4) {}
+		else {
+			ArrayList<Integer> a = m.annaRytmi();
+			a.set(1, a.get(1)*10);
+			m.asetaRytmi(a);
+		}
+	}
+	
+	public void poistaLoppuPieni(Motiivi m) {
+		if (m.annaRytmi().get(m.annaRytmi().size()-1) == 4) {
+			ArrayList<Integer> a = m.annaRytmi();
+			a.set(a.size()-1, 2);
+			a.add(20);
+			m.asetaRytmi(a);
+		}
+		
+		else if (m.annaRytmi().get(m.annaRytmi().size()-1) == 2) {
+			ArrayList<Integer> a = m.annaRytmi();
+			a.set(a.size()-1, 20);
+			m.asetaRytmi(a);
+		}
+		
+		else if (m.annaRytmi().get(m.annaRytmi().size()-1) == 1) {
+			ArrayList<Integer> a = m.annaRytmi();
+			a.set(a.size()-1, 10);
+			a.set(a.size()-2, 10);
+			m.asetaRytmi(a);
+		}
 	}
 }
