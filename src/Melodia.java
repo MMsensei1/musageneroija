@@ -97,6 +97,12 @@ public class Melodia {
 			//Jos nimi on a2, niin kopioidaan edellisen ominaisuudet
 			if (a.get(i).annaNimi().equals("a2")) {
 				a.set(i, new Motiivi(a.get(i-1)));
+				
+				if (a.get(i).annaAluke()) {
+					if (i != 0) {
+						a.get(i-1).asetaSeuraavallaAluke(true);
+					}
+				}
 			}
 			
 			else {
