@@ -133,4 +133,8 @@ public class Soinnut {
 	public int[] annaSointukierto() {
 		return sointukierto;
 	}
+	
+	public int annaRakenne() {
+		return rakenne;
+	}
 }

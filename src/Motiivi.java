@@ -8,6 +8,7 @@ public class Motiivi {
 	private int pituus;
 	
 	public Motiivi(String nimi, int pituus) {
+		this.nimi = nimi;
 		this.pituus = pituus;
 	}
 	
@@ -18,5 +19,37 @@ public class Motiivi {
 		this.onkoSeuraavallaAluke = a.onkoSeuraavallaAluke;
 		this.rytmi = a.rytmi;
 		this.pituus = a.pituus;
+	}
+	
+	public String annaNimi() {
+		return this.nimi;
+	}
+	
+	public boolean annaAluke() {
+		return this.onkoAluke;
+	}
+	
+	public void asetaAluke(boolean a) {
+		this.onkoAluke = a;
+	}
+	
+	public boolean annaViive() {
+		return onkoViive;
+	}
+	
+	public void asetaViive(boolean a) {
+		this.onkoViive = a;
+	}
+	
+	public boolean annaSeuraavallaAluke() {
+		return this.onkoSeuraavallaAluke;
+	}
+	
+	public void asetaSeuraavallaAluke(boolean a) {
+		this.onkoSeuraavallaAluke = a;
+	}
+	
+	public int annaPituus() {
+		return this.pituus;
 	}
 }
