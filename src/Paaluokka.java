@@ -1,6 +1,7 @@
 
 public class Paaluokka {
 	public static void main(String[] args){
+		Apu apuri = new Apu();
 		Soinnut soinnut = new Soinnut();
 		soinnut.arvo();
 		//for (int i = 0; i<soinnut.annaSointukierto().length; i++) {
@@ -36,5 +37,11 @@ public class Paaluokka {
 			if (melodia.osaC.get(i).annaViive()) System.out.print("V");
 			System.out.println("");
 		}
+		
+		System.out.println("");
+		
+		System.out.println(apuri.onkoSama(melodia.osaA));
+		System.out.println(apuri.onkoSama(melodia.osaB));
+		System.out.println(apuri.onkoSama(melodia.osaC));
 	}	
 }

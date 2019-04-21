@@ -80,5 +80,28 @@ public class Apu {
 		}
 		
 		return palautus;
-	}			
+	}
+	
+	//Tarkistaa onko parametrina annettu melodianpatka rakenteeltaan AA
+	//Palauttaa true jos rakenne on AA, muulloin false
+	public boolean onkoSama(ArrayList<Motiivi> a) {
+		boolean onkoSama = false;
+		
+		if (a.get(0).annaPituus() == 2 && a.size() == 8) {
+			onkoSama = true;
+			for (int i = 0; i<(a.size()/2); i++) {
+				if (!a.get(i).equals(a.get(i+4))) onkoSama = false;
+			}
+		}
+		
+		else if (a.get(0).annaPituus() == 4 && a.size() == 4) {
+			onkoSama = true;
+			for (int i = 0; i<(a.size()/2); i++) {
+				if (!a.get(i).equals(a.get(i+2))) onkoSama = false;
+			}
+		}
+		
+		return onkoSama;
+		
+	}
 }

@@ -21,6 +21,17 @@ public class Motiivi {
 		this.pituus = a.pituus;
 	}
 	
+	public boolean equals(Motiivi a) {
+		if (this.nimi == a.nimi &&
+			this.onkoAluke == a.onkoAluke &&
+			this.onkoViive == a.onkoViive &&
+			this.onkoSeuraavallaAluke == a.onkoSeuraavallaAluke &&
+			this.rytmi == a.rytmi &&
+			this.pituus == a.pituus) return true;
+		
+		else return false;
+	};
+	
 	public String annaNimi() {
 		return this.nimi;
 	}

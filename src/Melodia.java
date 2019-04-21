@@ -16,6 +16,8 @@ public class Melodia {
 		arvoAlukkeet(osaC);
 		
 		tarkistaAlukkeet(osaA, osaB, osaC, soinnut.annaRakenne());
+		
+		//arvoRytmit(osaA);
 	}
 	
 	public ArrayList<Motiivi> luoMelodiaOsa() {
@@ -98,10 +100,11 @@ public class Melodia {
 			}
 			
 			else {
+				//Arvotaan onko aluke(1), ei aluketta eika viivetta (2), vai viive (3)
 				int x = apuri.arpoja(new int[] {1, 3, 2, 3, 3, 1});
 				if (x == 1) {
 					a.get(i).asetaAluke(true);
-					a.get(i).asetaViive(false);
+					//a.get(i).asetaViive(false);
 					
 					if (i != 0) {
 						a.get(i-1).asetaSeuraavallaAluke(true);
@@ -109,12 +112,12 @@ public class Melodia {
 				}
 				
 				else if (x == 2) {
-					a.get(i).asetaAluke(false);
-					a.get(i).asetaViive(false);
+					//a.get(i).asetaAluke(false);
+					//a.get(i).asetaViive(false);
 				}
 				
 				else {
-					a.get(i).asetaAluke(false);
+					//a.get(i).asetaAluke(false);
 					a.get(i).asetaViive(true);
 				}
 			}
@@ -142,5 +145,9 @@ public class Melodia {
 			b.get(b.size()-1).asetaSeuraavallaAluke(true);
 		}
 		
+	}
+	
+	public void arvoRytmit(ArrayList<Motiivi> a) {
+		boolean onkoSama = apuri.onkoSama(a);
 	}
 }
