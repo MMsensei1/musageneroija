@@ -1,12 +1,25 @@
 public class Soinnut {
 	Apu apuri = new Apu();
+	private int rakenne;
 	private int[] sointukierto = new int[16];
-	public int[] soinnutA = new int[4];
-	public int[] soinnutB = new int[4];
-	public int[] soinnutC = new int[4];
-	public int[] soinnutD = new int[4];
+	private int[] soinnutA = new int[4];
+	private int[] soinnutB = new int[4];
+	private int[] soinnutC = new int[4];
+	private int[] soinnutD = new int[4];
 	
-	//Arpoo onko rakenne abac(1) vai aabc(2)
+	//Arpoo rakenteen ja soinnut ja asettaa ne sointukierto-muuttujaan
+	public void arvo() {
+		rakenne = arvoRakenne();
+		arvoA();
+		arvoB();
+		arvoC();
+		arvoD();
+		
+		if (rakenne == 1) rakennaSoinnut(soinnutA, soinnutB, soinnutA, soinnutC);
+		else rakennaSoinnut(soinnutA, soinnutA, soinnutD, soinnutC);
+	}
+	
+	//Arpoo rakenteen: abac(1), aabc(2)
 	public int arvoRakenne() {
 		int[] a = new int[] {1, 1, 2, 1};
 		return apuri.arpoja(a);
@@ -99,6 +112,22 @@ public class Soinnut {
 		else a = new int[] {4, 1};
 		
 		return apuri.arpoja(a);
+	}
+	
+	//rakentaa sointukierron annetuista sointupatkista
+	public void rakennaSoinnut(int[] a, int[] b, int[] c, int[] d) {
+		for (int i = 0; i<4; i++) {
+			sointukierto[i] = a[i];
+		}
+		for (int i = 0; i<4; i++) {
+			sointukierto[i+4] = b[i];
+		}
+		for (int i = 0; i<4; i++) {
+			sointukierto[i+8] = c[i];
+		}
+		for (int i = 0; i<4; i++) {
+			sointukierto[i+12] = d[i];
+		}
 	}
 	
 	public int[] annaSointukierto() {
