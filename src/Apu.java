@@ -1,5 +1,6 @@
 import java.util.Random;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Apu {
 	Random random = new Random();
@@ -36,9 +37,49 @@ public class Apu {
 		}
 		
 		catch (Exception e) {
-			System.out.println("Vääränlainen sointulistaajan syöte");
+			System.out.println("Vääränlainen sointulistaaja1 syöte");
 		}
 		
 		return palautus;
 	}
+	
+	//muuttaa parametrin String == "13" muotoon int[] = {1,10,3,9,2,1,4,1,5,1,6,1}
+	//String.lenght() == 2
+	//Parametri voi sisaltaa vain lukuja
+	public int[] sointuListaaja2(String a) {
+		int[] palautus = new int[12];
+		ArrayList<Integer> kaytetytLuvut = new ArrayList<Integer>();
+		
+		try {
+			int x1 = Integer.parseInt(a.substring(0, 1));
+			int x2 = Integer.parseInt(a.substring(1, 2));
+			
+			
+			kaytetytLuvut.add(x1);
+			kaytetytLuvut.add(x2);
+			
+			palautus[0] = x1;
+			palautus[1] = 10;
+			palautus[2] = x2;
+			palautus[3] = 9;
+			
+			for(int i = 2; i<6; i++) {
+				for(int j = 1; j<=6; j++) {
+					if (kaytetytLuvut.contains(j)) continue;
+					else {
+						palautus[i*2]=j;
+						kaytetytLuvut.add(j);
+						break;
+					}
+				}
+				palautus[i*2 + 1] = 1;
+			}
+		}
+		
+		catch (Exception e) {
+			System.out.println("Vääränlainen sointulistaaja2 syöte");
+		}
+		
+		return palautus;
+	}			
 }
