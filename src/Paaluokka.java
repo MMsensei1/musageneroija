@@ -1,12 +1,21 @@
 
 public class Paaluokka {
 	public static void main(String[] args){
-		Apu apuri = new Apu();
-		
-		int[] a = apuri.sointuListaaja2("24");
-		for(int i = 0; i<12; i=i+2) {
-			System.out.print(a[i] + " ");
-			System.out.println(a[i+1]);
+		Soinnut soinnut = new Soinnut();
+		soinnut.arvoA();
+		for	(int i = 0; i<4; i++) {
+			System.out.println(soinnut.soinnutA[i]);
+		}
+		soinnut.arvoB();
+		for	(int i = 0; i<4; i++) {
+			System.out.println(soinnut.soinnutB[i]);
+		}
+		for	(int i = 0; i<4; i++) {
+			System.out.println(soinnut.soinnutA[i]);
+		}
+		soinnut.arvoC();
+		for	(int i = 0; i<4; i++) {
+			System.out.println(soinnut.soinnutC[i]);
 		}
 	}	
 }
