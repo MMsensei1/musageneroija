@@ -11,13 +11,13 @@ public class Melodia {
 		osaB = luoMelodiaOsa();
 		osaC = luoMelodiaOsa();
 		
-		arvoAlukkeet(osaA);
-		arvoAlukkeet(osaB);
-		arvoAlukkeet(osaC);
+		arvoAlukkeet(osaA, soinnut.annaRakenne());
+		arvoAlukkeet(osaB, soinnut.annaRakenne());
+		arvoAlukkeet(osaC, soinnut.annaRakenne());
 		
 		tarkistaAlukkeet(osaA, osaB, osaC, soinnut.annaRakenne());
 		
-		//arvoRytmit(osaA);
+		arvoRytmit(osaA);
 	}
 	
 	public ArrayList<Motiivi> luoMelodiaOsa() {
@@ -92,15 +92,16 @@ public class Melodia {
 		return palautus;
 	}
 	
-	public void arvoAlukkeet(ArrayList<Motiivi> a) {
+	public void arvoAlukkeet(ArrayList<Motiivi> a, int rakenne) {
 		for (int i = 0; i<a.size(); i++) {
-			//Jos nimi on a2, niin kopioidaan edellisen ominaisuudet
+			//Jos nimi on a2, niin kopioidaan edellisen ominaisuudet lukuunottamatta onkoSeuraavaAluke
 			if (a.get(i).annaNimi().equals("a2")) {
 				a.set(i, new Motiivi(a.get(i-1)));
 				
-				if (a.get(i).annaAluke()) {
+				//Edelliselle motiiville annetaan tieto alukkeesta
+				if (a.get(i).annaAluke() != 0) {
 					if (i != 0) {
-						a.get(i-1).asetaSeuraavallaAluke(true);
+						a.get(i-1).asetaSeuraavallaAluke(a.get(i).annaAluke());
 					}
 				}
 			}
@@ -109,243 +110,198 @@ public class Melodia {
 				//Arvotaan onko aluke(1), ei aluketta eika viivetta (2), vai viive (3)
 				int x = apuri.arpoja(new int[] {1, 3, 2, 3, 3, 1});
 				if (x == 1) {
-					a.get(i).asetaAluke(true);
-					//a.get(i).asetaViive(false);
+					//Jos lyhyt motiivi, alukkeen pituus lyhyt (1)
+					if (a.get(i).annaPituus() == 2) {
+						a.get(i).asetaAluke(1);
+					}
 					
+					//Muulloin arvotaan onko aluke lyhyt (1) vai pitka (2)
+					else {
+						a.get(i).asetaAluke(apuri.arpoja(new int[] {1, 1, 2, 1}));
+					}
+					
+					//Edelliselle motiiville kerrotaan alukkeesta
 					if (i != 0) {
-						a.get(i-1).asetaSeuraavallaAluke(true);
+						a.get(i-1).asetaSeuraavallaAluke(a.get(i).annaAluke());
 					}
 				}
-				
-				else if (x == 2) {
-					//a.get(i).asetaAluke(false);
-					//a.get(i).asetaViive(false);
-				}
-				
+				else if (x == 2) {}
 				else {
-					//a.get(i).asetaAluke(false);
 					a.get(i).asetaViive(true);
 				}
 			}
 		}
 	}
 	
+	//Otetaan huomioon myos osien loput ja alut alukkeiden suhteen, ja lisataan naista tiedot
 	public void tarkistaAlukkeet(ArrayList<Motiivi> a, ArrayList<Motiivi> b, ArrayList<Motiivi> c, int rakenne) {
-		if (a.get(0).annaAluke() && rakenne == 1) {
-			b.get(b.size()-1).asetaSeuraavallaAluke(true);
+		if (a.get(0).annaAluke() != 0 && rakenne == 1) {
+			b.get(b.size()-1).asetaSeuraavallaAluke(a.get(0).annaAluke());
 		}
 		
-		if (a.get(0).annaAluke() && rakenne == 2) {
-			a.get(a.size()-1).asetaSeuraavallaAluke(true);
+		if (a.get(0).annaAluke() != 0 && rakenne == 2) {
+			a.get(a.size()-1).asetaSeuraavallaAluke(a.get(0).annaAluke());
 		}
 		
-		if (b.get(0).annaAluke()) {
-			a.get(a.size()-1).asetaSeuraavallaAluke(true);
+		if (b.get(0).annaAluke() != 0) {
+			a.get(a.size()-1).asetaSeuraavallaAluke(b.get(0).annaAluke());
 		}
 		
-		if (c.get(0).annaAluke() && rakenne == 1) {
-			a.get(a.size()-1).asetaSeuraavallaAluke(true);
+		if (c.get(0).annaAluke() != 0 && rakenne == 1) {
+			a.get(a.size()-1).asetaSeuraavallaAluke(c.get(0).annaAluke());
 		}
 		
-		if (c.get(0).annaAluke() && rakenne == 2) {
-			b.get(b.size()-1).asetaSeuraavallaAluke(true);
+		if (c.get(0).annaAluke() != 0 && rakenne == 2) {
+			b.get(b.size()-1).asetaSeuraavallaAluke(c.get(0).annaAluke());
 		}
 		
 	}
 	
+	//Arvotaan motiivien rytmit
 	public void arvoRytmit(ArrayList<Motiivi> a) {
 		boolean onkoSama = apuri.onkoSama(a);
-		boolean onkoLoppuAluke = false;
-		if (a.get(a.size()-1).annaSeuraavallaAluke()) onkoLoppuAluke = true;
 		
 		for (int i = 0; i<a.size(); i++) {
-			if (a.get(i).annaPituus() == 2) {
-				if (a.get(i).annaAluke()) {
-					//pieni aluke, pieni rytmi
-					a.get(i).asetaRytmi(rytmiLuojaPieni());
-				}
-				
-				else {
-					//Asetetaan rytmi
-					a.get(i).asetaRytmi(rytmiLuoja(2));
-				}
-				
-				if (a.get(i).annaViive()) {
-					//lisataan viive
-					lisaaViive(a.get(i));
-				}
-				
-				if (a.get(i).annaSeuraavallaAluke()) {
-					//Poistetaan loppu antaen tilaa seuraavalle alukkeelle
-					poistaLoppuPieni(a.get(i));
-				}
+			if (a.get(i).annaNimi().equals("a2")) {
+				//kopio
 			}
-			
-			else if (a.get(i).annaPituus() == 4 && !a.get(i).annaNimi().equals("pitka")) {
-				//Asetetaan rytmi
-				a.get(i).asetaRytmi(rytmiLuoja(4));
-				
-				if (a.get(i).annaAluke()) {
-					//Arvo aluke
-					//Jos edellinen oli 2, aluke on pieni
-				}
-				
-				if (a.get(i).annaViive()) {
-					//Arvo viive
-				}
-				
-				if (a.get(i).annaSeuraavallaAluke()) {
-					// stop kolmosella
-					//Arvo nuotin pituus
-				}
+			else if (i >= a.size()/2 && onkoSama) {
+				//kopio
 			}
-			
-			else if (a.get(i).annaNimi().equals("pitka")) {
-				
-				if (a.get(i).annaSeuraavallaAluke()) {
-					//Perus pitka
-				}
-				
-				else //Arvo pitka
-				
-				if (a.get(i).annaAluke()) {
-					//Arvo aluke
-					//Jos edellinen oli 2, aluke on pieni
-				}
+			else {
+				alukeLuoja(a.get(i));
+				rytmiLuoja(a.get(i));
+				//viiveLisaaja(a.get(i));
 			}
-			
-			else if (a.get(i).annaPituus() == 8) {
-				
-				if (a.get(i).annaSeuraavallaAluke()) {
-					//Perus superpitka
-				}
-				
-				else //Arvo superpitka
-				
-				if (a.get(i).annaAluke()) {
-					//Arvo aluke
-					//Jos edellinen oli 2, aluke on pieni
-				}
-			}
+		}
+		
+		for (int i = 0; i<a.size(); i++) {
+			//lopunPoistaja(a.get(i));
 		}
 	}
 	
-	public ArrayList<Integer> rytmiLuoja(int pituus) {
-		ArrayList<Integer> palautus = new ArrayList<Integer>();
+	public void rytmiLuoja(Motiivi m) {
 		
-		//Lisataan alkuun 2 iskua (4 kahdeksasosaa) taukoa 
-		palautus.add(40);
-		
-		for (int i = 0; i<pituus/2; i++) {
-			//Arvotaan rytmi: pitka(1), 1/4 * 2 (2), 1/8 * 4 (3), 1/4 + 1/8 * 2 (4), 1/8 * 2 + 1/4 (5), 1/8 + 1/4 + 1/8 (6)  
-			int[] a = new int[] {1, 1, 2, 1, 3, 1, 4, 1, 5, 1, 6, 1};
-			int b = apuri.arpoja(a);
-			
-			if (b == 1) {
-				palautus.add(4);
-			}
-			
-			else if (b == 2) {
-				palautus.add(2);
-				palautus.add(2);
-			}
-			
-			else if (b == 3) {
-				palautus.add(1);
-				palautus.add(1);
-				palautus.add(1);
-				palautus.add(1);
-			}
-			
-			else if (b == 4) {
-				palautus.add(2);
-				palautus.add(1);
-				palautus.add(1);
-			}
-			
-			else if (b == 5) {
-				palautus.add(1);
-				palautus.add(1);
-				palautus.add(2);
-			}
-			
-			else if (b == 6) {
-				palautus.add(1);
-				palautus.add(2);
-				palautus.add(1);
-			}
+		//Jos pitka, asetetaan 1/1 nuotti
+		if (m.annaNimi().equals("pitka")) {
+			ArrayList<Integer> a = new ArrayList<Integer>(m.annaRytmi());
+			a.add(8);
+			m.asetaRytmi(a);
 		}
 		
-		return palautus;
+		//Jos superPitka, asetetaan 2/1 nuotti
+		else if (m.annaNimi().equals("superPitka")) {
+			ArrayList<Integer> a = new ArrayList<Integer>(m.annaRytmi());
+			a.add(16);
+			m.asetaRytmi(a);
+		}
+		
+		//Muulloin arvotaan rytmi
+		else {
+			ArrayList<Integer> a = new ArrayList<Integer>(m.annaRytmi());
+			
+			for (int i = 0; i < m.annaPituus()/2; i++) {
+				//Arvotaan rytmi: 1/2 (1), 1/4 * 2 (2), 1/8 * 4 (3), 1/4 + 1/8 * 2 (4), 1/8 * 2 + 1/4 (5)
+				int x = apuri.arpoja(new int[] {1, 1, 2, 1, 3, 1, 4, 1, 5, 1});
+				if (x == 1) {
+					a.add(4);
+				}
+				else if (x == 2) {
+					a.add(2);
+					a.add(2);
+				}
+				else if (x == 3) {
+					a.add(1);
+					a.add(1);
+					a.add(1);
+					a.add(1);
+				}
+				else if (x == 4) {
+					a.add(2);
+					a.add(1);
+					a.add(1);
+				}
+				else if (x == 5) {
+					a.add(1);
+					a.add(1);
+					a.add(2);
+				}
+			}
+			
+			m.asetaRytmi(a);
+		}
 	}
 	
-	public ArrayList<Integer> rytmiLuojaPieni() {
-		ArrayList<Integer> palautus = new ArrayList<Integer>();
+	public void alukeLuoja(Motiivi m) {
+		ArrayList<Integer> a = new ArrayList<Integer>();
 		
-		//Lisataan alkuun 1 isku (2 kahdeksasosaa) taukoa 
-		palautus.add(20);
-		
-		//Arvotaan aluke: 1/8 * 2 (1), 1/4 (2), 1/8 (3)
-		int[] a = new int[] {1, 1, 2, 1};
-		int b = apuri.arpoja(a);
-		
-		if (b == 1) {
-			palautus.add(1);
-			palautus.add(1);
+		if (m.annaAluke() == 0) {
+			//Tyhja aluke
+			a.add(40);
+			m.asetaRytmi(a);
 		}
 		
-		else if (b == 2) {
-			palautus.add(2);
+		else if (m.annaAluke() == 1) {
+			//Arvotaan onko aluke 1/8 * 2 (1), 1/4 (2) vai 1/8 (3)
+			int x = apuri.arpoja(new int[] {1, 1, 2, 1, 3, 1});
+			if (x == 1) {
+				a.add(20);
+				a.add(1);
+				a.add(1);
+			}
+			if (x == 2) {
+				a.add(20);
+				a.add(2);
+			}
+			if (x == 1) {
+				a.add(30);
+				a.add(1);
+			}
+			
+			m.asetaRytmi(a);
 		}
 		
-		else if (b == 3) {
-			palautus.add(10);
-			palautus.add(1);
+		else if (m.annaAluke() == 2) {
+			//Arvotaan onko aluke 1/8 * 4 (1), 1/8 * 3 (2), 1/4 * 2 (3), 1/8 * 2 + 1/4 (4) vai 1/4 + 1/8 * 2 (5)
+			int x = apuri.arpoja(new int[] {1, 1, 2, 1, 3, 1, 4, 1 , 5, 1});
+			if (x == 1) {
+				a.add(1);
+				a.add(1);
+				a.add(1);
+				a.add(1);
+			}
+			else if (x == 2) {
+				a.add(10);
+				a.add(1);
+				a.add(1);
+				a.add(1);
+			}
+			else if (x == 3) {
+				a.add(2);
+				a.add(2);
+			}
+			else if (x == 4) {
+				a.add(1);
+				a.add(1);
+				a.add(2);
+			}
+			else if (x == 5) {
+				a.add(2);
+				a.add(1);
+				a.add(1);
+			}
+			
+			m.asetaRytmi(a);
 		}
-		
-		//Arvotaan rytmi: 1/8 * 2 (1), 1/4 (2)
-		a = new int[] {1, 1, 2, 1};
-		b = apuri.arpoja(a);
-		
-		if (b == 1) {
-			palautus.add(1);
-			palautus.add(1);
-		}
-		
-		else if (b == 2) {
-			palautus.add(2);
-		}	
-		
-		return palautus;
 	}
+	
+	
 	
 	public void lisaaViive(Motiivi m) {
 		if (m.annaRytmi().get(1) == 4) {}
 		else {
 			ArrayList<Integer> a = m.annaRytmi();
 			a.set(1, a.get(1)*10);
-			m.asetaRytmi(a);
-		}
-	}
-	
-	public void poistaLoppuPieni(Motiivi m) {
-		if (m.annaRytmi().get(m.annaRytmi().size()-1) == 4) {
-			ArrayList<Integer> a = m.annaRytmi();
-			a.set(a.size()-1, 2);
-			a.add(20);
-			m.asetaRytmi(a);
-		}
-		
-		else if (m.annaRytmi().get(m.annaRytmi().size()-1) == 2) {
-			ArrayList<Integer> a = m.annaRytmi();
-			a.set(a.size()-1, 20);
-			m.asetaRytmi(a);
-		}
-		
-		else if (m.annaRytmi().get(m.annaRytmi().size()-1) == 1) {
-			ArrayList<Integer> a = m.annaRytmi();
-			a.set(a.size()-1, 10);
-			a.set(a.size()-2, 10);
 			m.asetaRytmi(a);
 		}
 	}

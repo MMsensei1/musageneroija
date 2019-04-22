@@ -12,9 +12,13 @@ public class Paaluokka {
 		melodia.luoMelodia(soinnut);
 		for (int i = 0; i<melodia.osaA.size(); i++) {
 			System.out.print(melodia.osaA.get(i).annaNimi() + ": " + melodia.osaA.get(i).annaPituus() + " ");
-			if (melodia.osaA.get(i).annaAluke()) System.out.print("A");
-			if (melodia.osaA.get(i).annaSeuraavallaAluke()) System.out.print("S");
+			if (melodia.osaA.get(i).annaAluke() != 0) System.out.print("A" + melodia.osaA.get(i).annaAluke());
+			if (melodia.osaA.get(i).annaSeuraavallaAluke() != 0) System.out.print("S" + melodia.osaA.get(i).annaSeuraavallaAluke());
 			if (melodia.osaA.get(i).annaViive()) System.out.print("V");
+			System.out.print(" | ");
+			for (int x : melodia.osaA.get(i).annaRytmi()) {
+				System.out.print(x + " ");
+			}
 			System.out.println("");
 		}
 		
@@ -22,8 +26,8 @@ public class Paaluokka {
 		
 		for (int i = 0; i<melodia.osaB.size(); i++) {
 			System.out.print(melodia.osaB.get(i).annaNimi() + ": " + melodia.osaB.get(i).annaPituus() + " ");
-			if (melodia.osaB.get(i).annaAluke()) System.out.print("A");
-			if (melodia.osaB.get(i).annaSeuraavallaAluke()) System.out.print("S");
+			if (melodia.osaB.get(i).annaAluke() != 0) System.out.print("A" + melodia.osaB.get(i).annaAluke());
+			if (melodia.osaB.get(i).annaSeuraavallaAluke() != 0) System.out.print("S" + melodia.osaB.get(i).annaSeuraavallaAluke());
 			if (melodia.osaB.get(i).annaViive()) System.out.print("V");
 			System.out.println("");
 		}
@@ -32,8 +36,8 @@ public class Paaluokka {
 		
 		for (int i = 0; i<melodia.osaC.size(); i++) {
 			System.out.print(melodia.osaC.get(i).annaNimi() + ": " + melodia.osaC.get(i).annaPituus() + " ");
-			if (melodia.osaC.get(i).annaAluke()) System.out.print("A");
-			if (melodia.osaC.get(i).annaSeuraavallaAluke()) System.out.print("S");
+			if (melodia.osaC.get(i).annaAluke() != 0) System.out.print("A" + melodia.osaC.get(i).annaAluke());
+			if (melodia.osaC.get(i).annaSeuraavallaAluke() != 0) System.out.print("S" + melodia.osaC.get(i).annaSeuraavallaAluke());
 			if (melodia.osaC.get(i).annaViive()) System.out.print("V");
 			System.out.println("");
 		}

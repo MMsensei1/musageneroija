@@ -2,9 +2,9 @@ import java.util.ArrayList;
 
 public class Motiivi {
 	private String nimi;
-	private boolean onkoAluke = false;
+	private int onkoAluke = 0;
 	private boolean onkoViive = false;
-	private boolean onkoSeuraavallaAluke = false;
+	private int onkoSeuraavallaAluke = 0;
 	private ArrayList<Integer> rytmi;
 	private int pituus;
 	
@@ -17,7 +17,6 @@ public class Motiivi {
 		this.nimi = a.nimi;
 		this.onkoAluke = a.onkoAluke;
 		this.onkoViive = a.onkoViive;
-		this.onkoSeuraavallaAluke = a.onkoSeuraavallaAluke;
 		this.rytmi = a.rytmi;
 		this.pituus = a.pituus;
 	}
@@ -37,11 +36,11 @@ public class Motiivi {
 		return this.nimi;
 	}
 	
-	public boolean annaAluke() {
+	public int annaAluke() {
 		return this.onkoAluke;
 	}
 	
-	public void asetaAluke(boolean a) {
+	public void asetaAluke(int a) {
 		this.onkoAluke = a;
 	}
 	
@@ -53,11 +52,11 @@ public class Motiivi {
 		this.onkoViive = a;
 	}
 	
-	public boolean annaSeuraavallaAluke() {
+	public int annaSeuraavallaAluke() {
 		return this.onkoSeuraavallaAluke;
 	}
 	
-	public void asetaSeuraavallaAluke(boolean a) {
+	public void asetaSeuraavallaAluke(int a) {
 		this.onkoSeuraavallaAluke = a;
 	}
 	
