@@ -433,7 +433,7 @@ public class Melodia {
 	//Arvotaan motiivin savelkulku
 	public void arvoSavelet(Motiivi m) {
 		ArrayList<Integer> s = new ArrayList<Integer>();
-		
+		int alukeLaskuri = 0;
 		//Jos on aluke, arvotaan ensin alukkeen savelkulku
 		if (m.annaRytmi().get(0) != 40) {
 				int loppu = 0;
@@ -442,6 +442,7 @@ public class Melodia {
 					//Jos tauko, ei arvota savelta
 					if (m.annaRytmi().get(i) >= 10) {
 						loppu = loppu + ((m.annaRytmi().get(i))/(10));
+						alukeLaskuri++;
 					}
 					
 					//Muulloin arvotaan savel
@@ -449,6 +450,7 @@ public class Melodia {
 						int x = apuri.arpoja(new int[] {1, 4, 2, 6, 3, 6, 4, 1, 5, 1});
 						s.add(x);
 						loppu = loppu + m.annaRytmi().get(i);
+						alukeLaskuri++;
 					}
 					
 					if (loppu >= 4) break;
@@ -459,7 +461,13 @@ public class Melodia {
 		
 		//Arvotaan varsinainen savelkulku
 		int edellinenSuunta = 0;
+		if (alukeLaskuri == 0) alukeLaskuri = 1;
 		for (int b : m.annaRytmi()) {
+			if (alukeLaskuri > 0) {
+				alukeLaskuri--;
+				continue;
+			}
+			
 			//Jos tauko, ei arvota savelta
 			if (b >= 10 && b % 10 != 0) {}
 			
