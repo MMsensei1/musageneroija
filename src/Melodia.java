@@ -469,7 +469,7 @@ public class Melodia {
 			}
 			
 			//Jos tauko, ei arvota savelta
-			if (b >= 10 && b % 10 != 0) {}
+			if (b >= 10 && b % 10 == 0) {}
 			
 			//Muulloin arvotaan savel
 			else {
@@ -529,10 +529,13 @@ public class Melodia {
 		boolean onkoPitka = false;
 		
 		for (int i = 0; i<m.annaRytmi().size(); i++) {
-			if (m.annaRytmi().get(i) >= 10 && m.annaRytmi().get(i) % 10 != 0) tauot++;
+			if (m.annaRytmi().get(i) >= 10 && m.annaRytmi().get(i) % 10 == 0) tauot++;
 			if (m.annaRytmi().get(i) == 4 || m.annaNimi().equals("pitka") || m.annaNimi().equals("superPitka")) {
 				ArrayList<Integer> s = new ArrayList<Integer>(m.annaSavelet());
-				s.set(i-tauot, s.get(i-tauot)*10);
+				try {
+					s.set(i-tauot, s.get(i-tauot)*10);
+				}
+				catch (Exception e) {}
 				m.asetaSavelet(s);
 				onkoPitka = true;
 				break;
