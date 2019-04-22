@@ -171,7 +171,7 @@ public class Melodia {
 			else {
 				alukeLuoja(a.get(i));
 				rytmiLuoja(a.get(i));
-				//viiveLisaaja(a.get(i));
+				viiveLisaaja(a.get(i));
 			}
 		}
 		
@@ -297,8 +297,11 @@ public class Melodia {
 	
 	
 	
-	public void lisaaViive(Motiivi m) {
-		if (m.annaRytmi().get(1) == 4) {}
+	public void viiveLisaaja(Motiivi m) {
+		//Jos pitka nuotti, ei viivetta
+		if (m.annaRytmi().get(1) == 4 || m.annaNimi().equals("pitka") || m.annaNimi().equals("superPitka")) {}
+		
+		//Muulloin poistetaan ensimmainen nuotti
 		else {
 			ArrayList<Integer> a = m.annaRytmi();
 			a.set(1, a.get(1)*10);

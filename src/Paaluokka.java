@@ -16,9 +16,9 @@ public class Paaluokka {
 			if (melodia.osaA.get(i).annaSeuraavallaAluke() != 0) System.out.print("S" + melodia.osaA.get(i).annaSeuraavallaAluke());
 			if (melodia.osaA.get(i).annaViive()) System.out.print("V");
 			System.out.print(" | ");
-			for (int x : melodia.osaA.get(i).annaRytmi()) {
-				System.out.print(x + " ");
-			}
+			//for (int x : melodia.osaA.get(i).annaRytmi()) {
+			//	System.out.print(x + " ");
+			//}
 			System.out.println("");
 		}
 		
