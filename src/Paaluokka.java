@@ -37,6 +37,10 @@ public class Paaluokka {
 			for (int x : melodia.osaB.get(i).annaRytmi()) {
 				System.out.print(x + " ");
 			}
+			System.out.print(" | ");
+			for (int x : melodia.osaB.get(i).annaSavelet()) {
+				System.out.print(x + " ");
+			}
 			System.out.println("");
 		}
 		
@@ -49,6 +53,10 @@ public class Paaluokka {
 			if (melodia.osaC.get(i).annaViive()) System.out.print("V");
 			System.out.print(" | ");
 			for (int x : melodia.osaC.get(i).annaRytmi()) {
+				System.out.print(x + " ");
+			}
+			System.out.print(" | ");
+			for (int x : melodia.osaC.get(i).annaSavelet()) {
 				System.out.print(x + " ");
 			}
 			System.out.println("");
