@@ -19,6 +19,10 @@ public class Paaluokka {
 			for (int x : melodia.osaA.get(i).annaRytmi()) {
 				System.out.print(x + " ");
 			}
+			System.out.print(" | ");
+			for (int x : melodia.osaA.get(i).annaSavelet()) {
+				System.out.print(x + " ");
+			}
 			System.out.println("");
 		}
 		

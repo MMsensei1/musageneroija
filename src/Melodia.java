@@ -24,6 +24,12 @@ public class Melodia {
 		for (Motiivi m : osaA) {
 			arvoSavelet(m);
 		}
+		for (Motiivi m : osaB) {
+			arvoSavelet(m);
+		}
+		for (Motiivi m : osaC) {
+			arvoSavelet(m);
+		}
 	}
 	
 	public ArrayList<Motiivi> luoMelodiaOsa() {
@@ -377,8 +383,8 @@ public class Melodia {
 				ArrayList<Integer> a = m.annaRytmi();
 				a.set(a.size()-1, a.get(a.size()-1)*10);
 				a.set(a.size()-2, a.get(a.size()-2)*10);
-				a.set(a.size()-1, a.get(a.size()-3)*10);
-				a.set(a.size()-2, a.get(a.size()-4)*10);
+				a.set(a.size()-3, a.get(a.size()-3)*10);
+				a.set(a.size()-4, a.get(a.size()-4)*10);
 				m.asetaRytmi(a);
 			}
 			
@@ -387,7 +393,7 @@ public class Melodia {
 				ArrayList<Integer> a = m.annaRytmi();
 				a.set(a.size()-1, a.get(a.size()-1)*10);
 				a.set(a.size()-2, a.get(a.size()-2)*10);
-				a.set(a.size()-1, a.get(a.size()-3)*10);
+				a.set(a.size()-3, a.get(a.size()-3)*10);
 				m.asetaRytmi(a);
 			}
 			
@@ -455,7 +461,7 @@ public class Melodia {
 		int edellinenSuunta = 0;
 		for (int b : m.annaRytmi()) {
 			//Jos tauko, ei arvota savelta
-			if (b >= 10 && b != 16) {}
+			if (b >= 10 && b % 10 != 0) {}
 			
 			//Muulloin arvotaan savel
 			else {
@@ -515,8 +521,8 @@ public class Melodia {
 		boolean onkoPitka = false;
 		
 		for (int i = 0; i<m.annaRytmi().size(); i++) {
-			if (m.annaRytmi().get(i) >= 10 && m.annaRytmi().get(i) != 16) tauot++;
-			if (m.annaRytmi().get(i) == 4 || m.annaRytmi().get(i) == 8 || m.annaRytmi().get(i) == 16) {
+			if (m.annaRytmi().get(i) >= 10 && m.annaRytmi().get(i) % 10 != 0) tauot++;
+			if (m.annaRytmi().get(i) == 4 || m.annaNimi().equals("pitka") || m.annaNimi().equals("superPitka")) {
 				ArrayList<Integer> s = new ArrayList<Integer>(m.annaSavelet());
 				s.set(i-tauot, s.get(i-tauot)*10);
 				m.asetaSavelet(s);
