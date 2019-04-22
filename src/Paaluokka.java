@@ -16,9 +16,9 @@ public class Paaluokka {
 			if (melodia.osaA.get(i).annaSeuraavallaAluke() != 0) System.out.print("S" + melodia.osaA.get(i).annaSeuraavallaAluke());
 			if (melodia.osaA.get(i).annaViive()) System.out.print("V");
 			System.out.print(" | ");
-			//for (int x : melodia.osaA.get(i).annaRytmi()) {
-			//	System.out.print(x + " ");
-			//}
+			for (int x : melodia.osaA.get(i).annaRytmi()) {
+				System.out.print(x + " ");
+			}
 			System.out.println("");
 		}
 		
@@ -29,6 +29,10 @@ public class Paaluokka {
 			if (melodia.osaB.get(i).annaAluke() != 0) System.out.print("A" + melodia.osaB.get(i).annaAluke());
 			if (melodia.osaB.get(i).annaSeuraavallaAluke() != 0) System.out.print("S" + melodia.osaB.get(i).annaSeuraavallaAluke());
 			if (melodia.osaB.get(i).annaViive()) System.out.print("V");
+			System.out.print(" | ");
+			for (int x : melodia.osaB.get(i).annaRytmi()) {
+				System.out.print(x + " ");
+			}
 			System.out.println("");
 		}
 		
@@ -39,6 +43,10 @@ public class Paaluokka {
 			if (melodia.osaC.get(i).annaAluke() != 0) System.out.print("A" + melodia.osaC.get(i).annaAluke());
 			if (melodia.osaC.get(i).annaSeuraavallaAluke() != 0) System.out.print("S" + melodia.osaC.get(i).annaSeuraavallaAluke());
 			if (melodia.osaC.get(i).annaViive()) System.out.print("V");
+			System.out.print(" | ");
+			for (int x : melodia.osaC.get(i).annaRytmi()) {
+				System.out.print(x + " ");
+			}
 			System.out.println("");
 		}
 		

@@ -14,11 +14,15 @@ public class Motiivi {
 	}
 	
 	public Motiivi(Motiivi a) {
-		this.nimi = a.nimi;
 		this.onkoAluke = a.onkoAluke;
 		this.onkoViive = a.onkoViive;
-		this.rytmi = a.rytmi;
 		this.pituus = a.pituus;
+		this.nimi = a.nimi;
+		this.onkoSeuraavallaAluke = a.onkoSeuraavallaAluke;
+		if (a.rytmi != null) {
+			this.rytmi = new ArrayList<Integer>(a.rytmi);
+		}
+		
 	}
 	
 	public boolean equals(Motiivi a) {
@@ -34,6 +38,10 @@ public class Motiivi {
 	
 	public String annaNimi() {
 		return this.nimi;
+	}
+	
+	public void asetaNimi(String nimi) {
+		this.nimi = nimi;
 	}
 	
 	public int annaAluke() {
@@ -69,6 +77,12 @@ public class Motiivi {
 	}
 	
 	public void asetaRytmi(ArrayList<Integer> rytmi) {
-		this.rytmi = rytmi;
+		try {
+
+			this.rytmi = new ArrayList<Integer>(rytmi);
+		}
+		catch (Exception e) {
+			
+		}
 	}
 }

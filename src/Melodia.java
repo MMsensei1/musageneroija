@@ -18,6 +18,8 @@ public class Melodia {
 		tarkistaAlukkeet(osaA, osaB, osaC, soinnut.annaRakenne());
 		
 		arvoRytmit(osaA);
+		arvoRytmit(osaB);
+		arvoRytmit(osaC);
 	}
 	
 	public ArrayList<Motiivi> luoMelodiaOsa() {
@@ -94,9 +96,12 @@ public class Melodia {
 	
 	public void arvoAlukkeet(ArrayList<Motiivi> a, int rakenne) {
 		for (int i = 0; i<a.size(); i++) {
-			//Jos nimi on a2, niin kopioidaan edellisen ominaisuudet lukuunottamatta onkoSeuraavaAluke
+			//Jos nimi on a2, niin kopioidaan edellisen ominaisuudet lukuunottamatta onkoSeuraavaAluke ja Nimi
 			if (a.get(i).annaNimi().equals("a2")) {
-				a.set(i, new Motiivi(a.get(i-1)));
+				Motiivi b = new Motiivi(a.get(i-1));
+				b.asetaSeuraavallaAluke(a.get(i).annaSeuraavallaAluke());
+				b.asetaNimi(a.get(i).annaNimi());
+				a.set(i, b);
 				
 				//Edelliselle motiiville annetaan tieto alukkeesta
 				if (a.get(i).annaAluke() != 0) {
@@ -163,10 +168,15 @@ public class Melodia {
 		
 		for (int i = 0; i<a.size(); i++) {
 			if (a.get(i).annaNimi().equals("a2")) {
-				//kopio
+				//kopioidaan edellisen rytmi
+				Motiivi b = new Motiivi(a.get(i-1));
+				a.get(i).asetaRytmi(b.annaRytmi());
+				
 			}
 			else if (i >= a.size()/2 && onkoSama) {
-				//kopio
+				//kopioidaan rytmi osan alkupuolelta
+				Motiivi b = new Motiivi(a.get(((i+1) / 2) - 1));
+				a.get(i).asetaRytmi(b.annaRytmi());
 			}
 			else {
 				alukeLuoja(a.get(i));
@@ -175,8 +185,9 @@ public class Melodia {
 			}
 		}
 		
+		//Asetetaan loppuun tilaa seuraavaa aluketta varten
 		for (int i = 0; i<a.size(); i++) {
-			//lopunPoistaja(a.get(i));
+			lopunPoistaja(a.get(i));
 		}
 	}
 	
@@ -253,7 +264,7 @@ public class Melodia {
 				a.add(20);
 				a.add(2);
 			}
-			if (x == 1) {
+			if (x == 3) {
 				a.add(30);
 				a.add(1);
 			}
@@ -298,14 +309,114 @@ public class Melodia {
 	
 	
 	public void viiveLisaaja(Motiivi m) {
-		//Jos pitka nuotti, ei viivetta
-		if (m.annaRytmi().get(1) == 4 || m.annaNimi().equals("pitka") || m.annaNimi().equals("superPitka")) {}
+		if (m.annaViive()) {
+			
+			//Jos pitka nuotti, ei viivetta
+			if (m.annaRytmi().get(1) == 4 || m.annaNimi().equals("pitka") || m.annaNimi().equals("superPitka")) {}
+			
+			//Muulloin poistetaan ensimmainen nuotti
+			else {
+				ArrayList<Integer> a = m.annaRytmi();
+				a.set(1, a.get(1)*10);
+				m.asetaRytmi(a);
+			}
+		}
+	}
+	
+	public void lopunPoistaja(Motiivi m) {
+		if (m.annaSeuraavallaAluke() == 0) {}
 		
-		//Muulloin poistetaan ensimmainen nuotti
-		else {
-			ArrayList<Integer> a = m.annaRytmi();
-			a.set(1, a.get(1)*10);
-			m.asetaRytmi(a);
+		else if (m.annaSeuraavallaAluke() == 1) {
+			//Jos viimeinen nuotti 1/8, poistetaan kaksi viimeistä
+			if (m.annaRytmi().get(m.annaRytmi().size()-1) == 1) {
+				ArrayList<Integer> a = m.annaRytmi();
+				a.set(a.size()-1, a.get(a.size()-1)*10);
+				a.set(a.size()-2, a.get(a.size()-2)*10);
+				m.asetaRytmi(a);
+			}
+			
+			//Jos viimeinen nuotti 1/4, poistetaan se
+			else if (m.annaRytmi().get(m.annaRytmi().size()-1) == 2) {
+				ArrayList<Integer> a = m.annaRytmi();
+				a.set(a.size()-1, a.get(a.size()-1)*10);
+				m.asetaRytmi(a);
+			}
+			
+			//Jos viimeinen nuotti 1/2, lyhennetaan
+			else if (m.annaRytmi().get(m.annaRytmi().size()-1) == 4) {
+				ArrayList<Integer> a = m.annaRytmi();
+				a.set(a.size()-1, 2);
+				a.add(20);
+				m.asetaRytmi(a);
+			}
+			
+			//Jos viimeinen nuotti 1/1, lyhennetaan
+			else if (m.annaRytmi().get(m.annaRytmi().size()-1) == 8) {
+				ArrayList<Integer> a = m.annaRytmi();
+				a.set(a.size()-1, 6);
+				a.add(20);
+				m.asetaRytmi(a);
+			}
+			
+			//Jos viimeinen nuotti 2/1, lyhennetaan
+			else if (m.annaRytmi().get(m.annaRytmi().size()-1) == 16) {
+				ArrayList<Integer> a = m.annaRytmi();
+				a.set(a.size()-1, 14);
+				a.add(20);
+				m.asetaRytmi(a);
+			}
+		}
+		
+		else if (m.annaSeuraavallaAluke() == 2) {
+			//Jos viimeiset nuotit 1/8 * 4, poistetaan nelja viimeista
+			if (m.annaRytmi().get(m.annaRytmi().size()-1) == 1 && m.annaRytmi().get(m.annaRytmi().size()-3) == 1) {
+				ArrayList<Integer> a = m.annaRytmi();
+				a.set(a.size()-1, a.get(a.size()-1)*10);
+				a.set(a.size()-2, a.get(a.size()-2)*10);
+				a.set(a.size()-1, a.get(a.size()-3)*10);
+				a.set(a.size()-2, a.get(a.size()-4)*10);
+				m.asetaRytmi(a);
+			}
+			
+			//Jos viimeiset nuotit 1/8 ja 1/4 yhdistelma, poistetaan kolme viimeista
+			else if ((m.annaRytmi().get(m.annaRytmi().size()-1) == 1 && m.annaRytmi().get(m.annaRytmi().size()-3) == 2) || (m.annaRytmi().get(m.annaRytmi().size()-1) == 2 && m.annaRytmi().get(m.annaRytmi().size()-3) == 1)) {
+				ArrayList<Integer> a = m.annaRytmi();
+				a.set(a.size()-1, a.get(a.size()-1)*10);
+				a.set(a.size()-2, a.get(a.size()-2)*10);
+				a.set(a.size()-1, a.get(a.size()-3)*10);
+				m.asetaRytmi(a);
+			}
+			
+			//Jos viimeiset nuotit 1/4*2, poistetaan kaksi viimeista
+			if (m.annaRytmi().get(m.annaRytmi().size()-1) == 2 && m.annaRytmi().get(m.annaRytmi().size()-2) == 2) {
+				ArrayList<Integer> a = m.annaRytmi();
+				a.set(a.size()-1, a.get(a.size()-1)*10);
+				a.set(a.size()-2, a.get(a.size()-2)*10);
+				m.asetaRytmi(a);
+			}
+			
+			//Jos viimeinen nuotti 1/2, poistetaan se
+			else if (m.annaRytmi().get(m.annaRytmi().size()-1) == 4) {
+				ArrayList<Integer> a = m.annaRytmi();
+				a.set(a.size()-1, a.get(a.size()-1)*10);
+				m.asetaRytmi(a);
+			}
+			
+			//Jos viimeinen nuotti 1/1, lyhennetaan
+			else if (m.annaRytmi().get(m.annaRytmi().size()-1) == 8) {
+				ArrayList<Integer> a = m.annaRytmi();
+				a.set(a.size()-1, 4);
+				a.add(40);
+				m.asetaRytmi(a);
+			}
+			
+			//Jos viimeinen nuotti 2/1, lyhennetaan
+			else if (m.annaRytmi().get(m.annaRytmi().size()-1) == 16) {
+				ArrayList<Integer> a = m.annaRytmi();
+				a.set(a.size()-1, 12);
+				a.add(40);
+				m.asetaRytmi(a);
+			}
 		}
 	}
 }
