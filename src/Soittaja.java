@@ -77,8 +77,8 @@ public class Soittaja {
 				System.out.println("");
 				System.out.println("");
 				System.out.println("Length: " + soinnut.length);
-				System.out.println("Thing: " + ((paikka - 8) / 16));
-				uudetSavelet = transponoi(uudetSavelet, soinnut[(paikka - 8) / 16], viimeisinSavel);
+				System.out.println("Thing: " + ((paikka + 8) / 16));
+				uudetSavelet = transponoi(uudetSavelet, soinnut[(paikka + 8)/16], viimeisinSavel);
 				viimeisinSavel = uudetSavelet.get(uudetSavelet.size()-1);
 				uudetSavelet.remove(uudetSavelet.size()-1);
 				
@@ -103,6 +103,7 @@ public class Soittaja {
 						if (uudetSavelet.get(savelLuku) > 500) savel = savel - 1000;
 						lisaaNuotti(nuotit.get(savel), paikka, r, track);
 						paikka = paikka + (r*2);
+						savelLuku++;
 					}
 				}
 				
