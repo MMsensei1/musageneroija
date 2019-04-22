@@ -20,6 +20,10 @@ public class Melodia {
 		arvoRytmit(osaA);
 		arvoRytmit(osaB);
 		arvoRytmit(osaC);
+		
+		for (Motiivi m : osaA) {
+			arvoSavelet(m);
+		}
 	}
 	
 	public ArrayList<Motiivi> luoMelodiaOsa() {
@@ -416,6 +420,131 @@ public class Melodia {
 				a.set(a.size()-1, 12);
 				a.add(40);
 				m.asetaRytmi(a);
+			}
+		}
+	}
+	
+	//Arvotaan motiivin savelkulku
+	public void arvoSavelet(Motiivi m) {
+		ArrayList<Integer> s = new ArrayList<Integer>();
+		
+		//Jos on aluke, arvotaan ensin alukkeen savelkulku
+		if (m.annaRytmi().get(0) != 40) {
+				int loppu = 0;
+				int i = 0;
+				while (true) {
+					//Jos tauko, ei arvota savelta
+					if (m.annaRytmi().get(i) >= 10) {
+						loppu = loppu + ((m.annaRytmi().get(i))/(10));
+					}
+					
+					//Muulloin arvotaan savel
+					else {
+						int x = apuri.arpoja(new int[] {1, 4, 2, 6, 3, 6, 4, 1, 5, 1});
+						s.add(x);
+						loppu = loppu + m.annaRytmi().get(i);
+					}
+					
+					if (loppu >= 4) break;
+					
+					i++;
+				}
+			}
+		
+		//Arvotaan varsinainen savelkulku
+		int edellinenSuunta = 0;
+		for (int b : m.annaRytmi()) {
+			//Jos tauko, ei arvota savelta
+			if (b >= 10 && b != 16) {}
+			
+			//Muulloin arvotaan savel
+			else {
+				
+				int x = 0;
+				//Suuntaa ei oteta huomioon
+				if (edellinenSuunta == 0) {
+					
+					//Arvotaan. Jos rytmi on 1/8, savelhyppyyn ei ole mahdollisuutta
+					while (true) {
+						 x = apuri.arpoja(new int[] {1, 2, 2, 6, 3, 6, 4, 1, 5, 1});
+						 if (b != 1) break;
+						 else if (x != 4 && x != 5) break;
+					}
+					
+					s.add(x);
+					
+					//Asetetaan edellinen suunta tulosten mukaan: ylos (1), alas(2)
+					if (x == 2 || x== 4) edellinenSuunta = 1;
+					else if (x == 3 || x== 5) edellinenSuunta = 2;
+				}
+				
+				//Tod.nak. ylos
+				else if (edellinenSuunta == 1) {
+					while (true) {
+						 x = apuri.arpoja(new int[] {1, 2, 2, 8, 3, 4, 4, 1, 5, 1});
+						 if (b != 1) break;
+						 else if (x != 4 && x != 5) break;
+					}
+					s.add(x);
+					
+					if (x == 2 || x== 4) edellinenSuunta = 1;
+					else if (x == 3 || x== 5) edellinenSuunta = 2;
+				}
+				
+				//Tod.nak. alas
+				else if (edellinenSuunta == 2) {
+					while (true) {
+						 x = apuri.arpoja(new int[] {1, 2, 2, 4, 3, 8, 4, 1, 5, 1});
+						 if (b != 1) break;
+						 else if (x != 4 && x != 5) break;
+					}
+					s.add(x);
+					
+					if (x == 2 || x== 4) edellinenSuunta = 1;
+					else if (x == 3 || x== 5) edellinenSuunta = 2;
+				}
+			}
+		}
+		m.asetaSavelet(s);
+		asetaPaino(m);
+	}
+	
+	//Kerrotaan painolliset savelet *10
+	public void asetaPaino(Motiivi m) {
+		int tauot = 0;
+		boolean onkoPitka = false;
+		
+		for (int i = 0; i<m.annaRytmi().size(); i++) {
+			if (m.annaRytmi().get(i) >= 10 && m.annaRytmi().get(i) != 16) tauot++;
+			if (m.annaRytmi().get(i) == 4 || m.annaRytmi().get(i) == 8 || m.annaRytmi().get(i) == 16) {
+				ArrayList<Integer> s = new ArrayList<Integer>(m.annaSavelet());
+				s.set(i-tauot, s.get(i-tauot)*10);
+				m.asetaSavelet(s);
+				onkoPitka = true;
+				break;
+			}
+		}
+		
+		int aluke = 0;
+		tauot = 0;
+		if (!onkoPitka) {
+			for (int i = 0; i<m.annaRytmi().size(); i++) {
+				if (aluke >= 4) {
+					ArrayList<Integer> s = new ArrayList<Integer>(m.annaSavelet());
+					s.set(i-tauot, s.get(i-tauot)*10);
+					m.asetaSavelet(s);
+					break;
+				}
+				else {
+					if (m.annaRytmi().get(i) >= 10 && m.annaRytmi().get(i) != 16) {
+						aluke = aluke + (m.annaRytmi().get(i) / 10);
+						tauot++;
+					}
+					else {
+						aluke = aluke + m.annaRytmi().get(i);
+					}
+				}
+				
 			}
 		}
 	}

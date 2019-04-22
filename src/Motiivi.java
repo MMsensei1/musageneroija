@@ -6,6 +6,7 @@ public class Motiivi {
 	private boolean onkoViive = false;
 	private int onkoSeuraavallaAluke = 0;
 	private ArrayList<Integer> rytmi;
+	private ArrayList<Integer> savelet;
 	private int pituus;
 	
 	public Motiivi(String nimi, int pituus) {
@@ -84,5 +85,13 @@ public class Motiivi {
 		catch (Exception e) {
 			
 		}
+	}
+	
+	public ArrayList<Integer> annaSavelet(){
+		return this.savelet;
+	}
+	
+	public void asetaSavelet(ArrayList<Integer> savelet) {
+		this.savelet = savelet;
 	}
 }
