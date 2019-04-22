@@ -1,9 +1,12 @@
+import java.util.ArrayList;
 
 public class Paaluokka {
 	public static void main(String[] args){
 		Apu apuri = new Apu();
 		Soinnut soinnut = new Soinnut();
 		soinnut.arvo();
+		
+		Soittaja jukebox = new Soittaja();
 		//for (int i = 0; i<soinnut.annaSointukierto().length; i++) {
 		//	System.out.println(soinnut.annaSointukierto()[i]);
 		//}
@@ -67,5 +70,12 @@ public class Paaluokka {
 		System.out.println(apuri.onkoSama(melodia.osaA));
 		System.out.println(apuri.onkoSama(melodia.osaB));
 		System.out.println(apuri.onkoSama(melodia.osaC));
+		
+		for (int sointu : soinnut.annaSointukierto()) {
+			System.out.println(sointu);
+		}
+		
+		ArrayList<Motiivi> kokoMelodia = apuri.yhdistaMelodiat(soinnut.annaRakenne(), melodia.osaA, melodia.osaB, melodia.osaC);
+		jukebox.soita(soinnut.annaSointukierto(), kokoMelodia);
 	}	
 }

@@ -530,12 +530,9 @@ public class Melodia {
 		
 		for (int i = 0; i<m.annaRytmi().size(); i++) {
 			if (m.annaRytmi().get(i) >= 10 && m.annaRytmi().get(i) % 10 == 0) tauot++;
-			if (m.annaRytmi().get(i) == 4 || m.annaNimi().equals("pitka") || m.annaNimi().equals("superPitka")) {
+			else if (m.annaRytmi().get(i) == 4 || m.annaNimi().equals("pitka") || m.annaNimi().equals("superPitka")) {
 				ArrayList<Integer> s = new ArrayList<Integer>(m.annaSavelet());
-				try {
-					s.set(i-tauot, s.get(i-tauot)*10);
-				}
-				catch (Exception e) {}
+				s.set(i-tauot, s.get(i-tauot)*10);
 				m.asetaSavelet(s);
 				onkoPitka = true;
 				break;
@@ -548,7 +545,10 @@ public class Melodia {
 			for (int i = 0; i<m.annaRytmi().size(); i++) {
 				if (aluke >= 4) {
 					ArrayList<Integer> s = new ArrayList<Integer>(m.annaSavelet());
-					s.set(i-tauot, s.get(i-tauot)*10);
+					try {
+						s.set(i-tauot, s.get(i-tauot)*10);
+					}
+					catch (Exception e) {}
 					m.asetaSavelet(s);
 					break;
 				}

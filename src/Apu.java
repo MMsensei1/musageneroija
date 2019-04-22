@@ -104,4 +104,40 @@ public class Apu {
 		return onkoSama;
 		
 	}
+	
+	public ArrayList<Motiivi> yhdistaMelodiat (int rakenne, ArrayList<Motiivi> a, ArrayList<Motiivi> b, ArrayList<Motiivi> c){
+		 ArrayList<Motiivi> palautus = new  ArrayList<Motiivi>();
+		 
+		 if (rakenne == 1) {
+			 for (Motiivi m : a) {
+				 palautus.add(m);
+			 }
+			 for (Motiivi m : b) {
+				 palautus.add(m);
+			 }
+			 for (Motiivi m : a) {
+				 palautus.add(m);
+			 }
+			 for (Motiivi m : c) {
+				 palautus.add(m);
+			 }
+		 }
+		 
+		 else if (rakenne == 2) {
+			 for (Motiivi m : a) {
+				 palautus.add(m);
+			 }
+			 for (Motiivi m : a) {
+				 palautus.add(m);
+			 }
+			 for (Motiivi m : b) {
+				 palautus.add(m);
+			 }
+			 for (Motiivi m : c) {
+				 palautus.add(m);
+			 }
+		 }
+		 
+		 return palautus;
+	}
 }
