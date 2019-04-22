@@ -3,12 +3,16 @@ import javax.sound.midi.*;
  
 public class Soittaja {
 	Apu apuri = new Apu();
+	
+	int soitin = 5;
+	int tempo = 130;
+	int savellaji = 12; //C = 12
+	int moodi = 25 - 7*2; //27 = Duuri, 25 = Molli
+	
 	public void soita(int[] soinnut, ArrayList<Motiivi> melodia) {
 		
 		
-		int soitin = 0;
-		int tempo = 130;
-		int savellaji = 12; //C = 12
+		
 		
 		//Luodaan lista savellajin nuoteista
 		ArrayList<Integer> nuotit = new ArrayList<Integer>();
@@ -39,14 +43,24 @@ public class Soittaja {
 			track.add(soitinVaihto);
 			
 			int paikka = 8;
-			int moodi = 27 - 7*2; //27 = Duuri
 			
 			//Asetetaan soinnut
 			for (int sointu : soinnut) {
-				for (int i = 0; i<2; i++) {
-					lisaaNuotti(nuotit.get(moodi+sointu), paikka, 8, track);
-					paikka = paikka+8;
-				}
+				lisaaNuotti(nuotit.get(moodi+sointu), paikka, 8, track, 70);
+				paikka = paikka+8;
+				lisaaNuotti(nuotit.get(moodi+sointu+7), paikka, 8, track, 70);
+				paikka = paikka+8;
+				
+				/*for (int i = 0; i<2; i++) {
+					lisaaNuotti(nuotit.get(moodi+sointu), paikka, 2, track, 70);
+					paikka = paikka+2;
+					lisaaNuotti(nuotit.get(moodi+sointu+4), paikka, 2, track, 70);
+					paikka = paikka+2;
+					lisaaNuotti(nuotit.get(moodi+sointu+2), paikka, 2, track, 70);
+					paikka = paikka+2;
+					lisaaNuotti(nuotit.get(moodi+sointu+4), paikka, 2, track, 70);
+					paikka = paikka+2;
+				}*/
 			}
 			
 			
@@ -101,7 +115,7 @@ public class Soittaja {
 					else {
 						savel = uudetSavelet.get(savelLuku);
 						if (uudetSavelet.get(savelLuku) > 500) savel = savel - 1000;
-						lisaaNuotti(nuotit.get(savel), paikka, r, track);
+						lisaaNuotti(nuotit.get(savel), paikka, r, track, 100);
 						paikka = paikka + (r*2);
 						savelLuku++;
 					}
@@ -129,9 +143,9 @@ public class Soittaja {
 		
 		//Asetetaan soinnun savelet
 		for (int i = 0; i<8; i++) {
-			soinnunSavelet.add(0 + 7*i);
-			soinnunSavelet.add(2 + 7*i);
-			soinnunSavelet.add(4 + 7*i);
+			soinnunSavelet.add(moodi - 13 + 0 + 7*i);
+			soinnunSavelet.add(moodi - 13 + 2 + 7*i);
+			soinnunSavelet.add(moodi - 13 + 4 + 7*i);
 		}
 		
 		boolean onkoPainollinen = false;
@@ -231,9 +245,9 @@ public class Soittaja {
 		//Asetetaan soinnun savelet
 		ArrayList<Integer> soinnunSavelet = new ArrayList<Integer>();
 		for (int i = 0; i<8; i++) {
-			soinnunSavelet.add(0 - 1 + sointu + 7*i);
-			soinnunSavelet.add(2 - 1 + sointu + 7*i);
-			soinnunSavelet.add(4 - 1 + sointu + 7*i);
+			soinnunSavelet.add(moodi - 13 - 32 - 1 + sointu + 7*i);
+			soinnunSavelet.add(moodi - 13 + 2 - 1 + sointu + 7*i);
+			soinnunSavelet.add(moodi - 13 + 4 - 1 + sointu + 7*i);
 		}
 		
 		ArrayList<Integer> palautus = new ArrayList<Integer>();
@@ -264,14 +278,14 @@ public class Soittaja {
 	}
 	
 	//Lisataan nuotin alku ja loppu sekvensseriin
-	public void lisaaNuotti(int nuotti, int alku, int pituus, Track track) throws InvalidMidiDataException {
+	public void lisaaNuotti(int nuotti, int alku, int pituus, Track track, int v) throws InvalidMidiDataException {
 		ShortMessage a = new ShortMessage();
-		a.setMessage(144, 1, nuotti, 100);
+		a.setMessage(144, 1, nuotti, v);
 		MidiEvent noteOn = new MidiEvent(a, alku);
 		track.add(noteOn);
 	
 		ShortMessage b = new ShortMessage();
-		b.setMessage(128, 1, nuotti, 100);
+		b.setMessage(128, 1, nuotti, v);
 		MidiEvent noteOff = new MidiEvent(b, alku+pituus);
 		track.add(noteOff);
 	}
